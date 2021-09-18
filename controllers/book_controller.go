@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/Rahmanwghazi/AlterraCRUD/config"
 	"github.com/Rahmanwghazi/AlterraCRUD/models"
@@ -37,5 +38,22 @@ func AddBookController(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "successful operation",
 		"book":    book,
+	})
+}
+
+func DeleteBookByIdController(e echo.Context) error {
+	id, _ := strconv.Atoi(e.Param("id"))
+	book := &models.Book{}
+
+	err := config.InitDB().Find(&book, "id = ?", id).Error
+	if err != nil {
+		return e.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": err.Error(),
+		})
+	}
+	config.InitDB().Delete(&models.Book{}, id)
+
+	return e.JSON(http.StatusOK, map[string]interface{}{
+		"message": "successful deleted",
 	})
 }
