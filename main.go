@@ -1,13 +1,12 @@
 package main
 
 import (
-	"github.com/Rahmanwghazi/AlterraCRUD/controllers"
-	"github.com/labstack/echo/v4"
+	"github.com/Rahmanwghazi/AlterraCRUD/config"
+	"github.com/Rahmanwghazi/AlterraCRUD/routes"
 )
 
 func main() {
-	e := echo.New()
-	e.GET("/books/:id", controllers.GetBookController)
-	e.POST("/books/", controllers.AddBookController)
+	config.InitDB()
+	e := routes.New()
 	e.Start(":8000")
 }

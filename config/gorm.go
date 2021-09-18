@@ -9,8 +9,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetConnection() *gorm.DB {
-	dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
+func InitDB() *gorm.DB {
+	dsn := "root:@tcp(127.0.0.1:3306)/alterra_crud?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
