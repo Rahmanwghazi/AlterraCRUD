@@ -30,7 +30,7 @@ func GetBookByIdController(c echo.Context) error {
 	err := config.InitDB().Table("books").First(&book, id).Error
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-			"message": err.Error(),
+			"message": "not found",
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -46,7 +46,7 @@ func AddBookController(c echo.Context) error {
 	err := config.InitDB().Save(&book).Error
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": err.Error(),
+			"message": "not found",
 		})
 	}
 
@@ -59,10 +59,10 @@ func DeleteBookByIdController(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	book := models.Book{}
 
-	err := config.InitDB().Find(&book, "id = ?", id).Error
+	err := config.InitDB().Table("books").First(&book, id).Error
 	if err != nil {
-		return c.JSON(http.StatusNoContent, map[string]interface{}{
-			"message": err.Error(),
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"message": "not found",
 		})
 	}
 	config.InitDB().Delete(&models.Book{}, id)
@@ -82,7 +82,7 @@ func UpdateBookByIdController(c echo.Context) error {
 	err := config.InitDB().Table("books").First(&books, id).Error
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-			"message": err.Error(),
+			"message": "not found",
 		})
 	}
 
@@ -94,6 +94,6 @@ func UpdateBookByIdController(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"book": book,
+		"book": books,
 	})
 }
